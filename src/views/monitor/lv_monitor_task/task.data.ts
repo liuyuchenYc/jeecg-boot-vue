@@ -3,39 +3,81 @@ import { render } from '/@/utils/common/renderUtils';
 import { JCronValidator } from '/@/components/Form';
 import { t } from 'vxe-table';
 
+const channel1 = [
+  { label: '抖音', value: '8' },
+  { label: '快手', value: '9' },
+  // { label: '小红书', value: '9' },
+]
+
+const channel2 = [
+  { label: '淘宝', value: '1' },
+  { label: '1688', value: '2' },
+  { label: '京东', value: '3' },
+  // { label: '亚马逊', value: '7' },
+  { label: '抖音', value: '5' },
+  { label: '快手', value: '6' },
+  { label: '小红书', value: '7' },
+]
+
+
 export const columns: BasicColumn[] = [
   {
     title: '任务ID',
-    dataIndex: 'taskId',
-    width: 100,
+    dataIndex: 'id',
+    width: 120,
   },
   {
     title: '任务名称',
-    dataIndex: 'jobClassName',
-    width: 200,
+    dataIndex: 'taskName',
+    width: 100,
   },
   {
     title: '检索关键词',
-    dataIndex: 'searchKey',
-    width: 200,
+    dataIndex: 'keyWord',
+    width: 100,
   },
   {
     title: '检索域',
     dataIndex: 'searchDomain',
+    width: 100,
+    customRender: ({ text }) => {
+      return text == '1' ? '内容' : '商品';
+    },
+  },
+  {
+    title: '渠道',
+    dataIndex: 'channel',
     width: 200,
+    customRender: ({ text, record }) => {
+
+      let arr = text.split(',');
+      let arr1 = [];
+
+      if(record.searchDomain == '1'){
+       arr1 = arr.map(el => {
+          const find = channel1.find(opt => opt.value === el);
+          return find?.label || '--';
+        })
+      }else{
+       arr1 = arr.map(el => {
+          const find = channel2.find(opt => opt.value === el);
+          return find?.label || '--';
+        })
+      }
+      return arr1.join(',')
+    }
   },
   {
     title: '线索条数',
-    dataIndex: 'count',
+    dataIndex: 'clueTotal',
     width: 100,
   },
   {
     title: '任务状态',
-    dataIndex: 'taskStatus',
+    dataIndex: 'status',
     width: 100,
     customRender: ({ text }) => {
-      const color = text == '0' ? 'green' : text == '-1' ? 'red' : 'gray';
-      return render.renderTag(render.renderDict(text, 'quartz_status'), color);
+      return ['进行中','完成','停止'][text]
     },
   },
 ];
@@ -51,20 +93,49 @@ export const searchFormSchema: FormSchema[] = [
     field: 'status',
     label: '任务状态',
     component: 'Select',
-    //填写组件的属性
+    componentProps: {
+      options: channel1,
+    },
+  },
+  {
+    field: 'keyWord',
+    label: '关键词',
+    component: 'Input',
+    colProps: { span: 8 },
+  },
+  {
+    field: 'searchDomain',
+    label: '检索域',
+    component: 'Select',
+    colProps: { span: 8 },
+    defaultValue: null,
     componentProps: {
       options: [
-        { label: '进行中', value: 0 },
-        { label: '完成', value: 1 },
-        { label: '停止', value: 2 },
+        { label: '内容', value: 1 },
+        { label: '商品', value: 2 },
       ],
     },
   },
   {
-    field: 'searchKey',
-    label: '关键词',
-    component: 'Input',
-    colProps: { span: 8 },
+    ifShow: ({ values }) => values.searchDomain === 1,
+    field: 'channel',
+    label: '内容',
+    component: 'CheckboxGroup',
+    defaultValue: null,
+    componentProps: {
+      options: channel1,
+    },
+  },
+  {
+    ifShow: ({ values }) => values.searchDomain === 2,
+    field: 'channel',
+    label: '商品',
+    component: 'CheckboxGroup',
+    colProps: { span: 16 },
+    defaultValue: null,
+    componentProps: {
+      options: channel2,
+    },
   },
   {
     field: 'createDate',
@@ -78,62 +149,6 @@ export const searchFormSchema: FormSchema[] = [
     component: 'DatePicker',
     colProps: { span: 8 },
   },
-  {
-    field: 'searchDomain',
-    label: '检索域',
-    component: 'RadioButtonGroup',
-    colProps: { span: 8 },
-    defaultValue: null,
-    componentProps: {
-      options: [
-        { label: '内容', value: 1 },
-        { label: '商品', value: 2 },
-      ],
-    },
-  },
-  {
-    ifShow: ({ values }) => values.searchDomain === 1,
-    field: 'searchDomain1',
-    label: '内容',
-    component: 'CheckboxGroup',
-    defaultValue: null,
-    componentProps: {
-      options: [
-        { label: '抖音', value: 1 },
-        { label: '快手', value: 2 },
-        { label: '小红书', value: 3 },
-      ],
-    },
-  },
-  {
-    ifShow: ({ values }) => values.searchDomain === 2,
-    field: 'searchDomain1',
-    label: '商品',
-    component: 'CheckboxGroup',
-    colProps: { span: 16 },
-    defaultValue: null,
-    componentProps: {
-      options: [
-        { label: '淘宝', value: 4 },
-        { label: '1688', value: 5 },
-        { label: '京东', value: 6 },
-        { label: '亚马逊', value: 7 },
-        { label: '抖音', value: 8 },
-        { label: '快手', value: 9 },
-        { label: '小红书', value: 10 },
-      ],
-    },
-  },
-  // {
-  //   field: 'status',
-  //   label: '任务状态',
-  //   component: 'JDictSelectTag',
-  //   componentProps: {
-  //     dictCode: 'quartz_status',
-  //     stringToNumber: true,
-  //   },
-  //   colProps: { span: 8 },
-  // },
 ];
 
 export const formSchema: FormSchema[] = [
@@ -144,13 +159,13 @@ export const formSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'jobClassName',
+    field: 'taskName',
     label: '任务名称',
     component: 'Input',
     required: true,
   },
   {
-    field: 'searchKey',
+    field: 'keyWord',
     label: '检索关键词',
     component: 'Input',
     required: true,
@@ -158,7 +173,7 @@ export const formSchema: FormSchema[] = [
   {
     field: 'searchDomain',
     label: '检索域',
-    component: 'RadioButtonGroup',
+    component: 'Select',
     required: true,
     defaultValue: null,
     componentProps: {
@@ -170,216 +185,71 @@ export const formSchema: FormSchema[] = [
   },
   {
     ifShow: ({ values }) => values.searchDomain === 1,
-    field: 'searchDomain1',
+    field: 'channel',
     label: '内容',
     component: 'CheckboxGroup',
     required: true,
     defaultValue: null,
     componentProps: {
-      options: [
-        { label: '抖音', value: 1 },
-        { label: '快手', value: 2 },
-        { label: '小红书', value: 3 },
-      ],
+      options: channel1,
     },
   },
   {
     ifShow: ({ values }) => values.searchDomain === 2,
-    field: 'searchDomain1',
+    field: 'channel',
     label: '商品',
     component: 'CheckboxGroup',
     required: true,
     defaultValue: null,
     componentProps: {
-      options: [
-        { label: '淘宝', value: 4 },
-        { label: '1688', value: 5 },
-        { label: '京东', value: 6 },
-        { label: '亚马逊', value: 7 },
-        { label: '抖音', value: 8 },
-        { label: '快手', value: 9 },
-        { label: '小红书', value: 10 },
-      ],
+      options: channel2,
     },
   },
-
-  // {
-  //   field: 'cronExpression',
-  //   label: 'Cron表达式',
-  //   component: 'JEasyCron',
-  //   defaultValue: '* * * * * ? *',
-  //   rules: [{ required: true, message: '请输入Cron表达式' }, { validator: JCronValidator }],
-  // },
-  // {
-  //   field: 'paramterType',
-  //   label: '参数类型',
-  //   component: 'Select',
-  //   defaultValue: 'string',
-  //   componentProps: {
-  //     options: [
-  //       { label: '字符串', value: 'string' },
-  //       { label: 'JSON对象', value: 'json' },
-  //     ],
-  //   },
-  // },
-  // {
-  //   field: 'parameter',
-  //   label: '参数',
-  //   component: 'InputTextArea',
-  //   ifShow: ({ values }) => {
-  //     return values.paramterType == 'string';
-  //   },
-  // },
-  // {
-  //   field: 'parameter',
-  //   label: '参数',
-  //   component: 'JAddInput',
-  //   helpMessage: '键值对形式填写',
-  //   ifShow: ({ values }) => {
-  //     return values.paramterType == 'json';
-  //   },
-  // },
-  // {
-  //   field: 'status',
-  //   label: '状态',
-  //   component: 'JDictSelectTag',
-  //   componentProps: {
-  //     dictCode: 'quartz_status',
-  //     type: 'radioButton',
-  //     stringToNumber: true,
-  //     dropdownStyle: {
-  //       maxHeight: '6vh',
-  //     },
-  //   },
-  // },
-  // {
-  //   field: 'description',
-  //   label: '描述',
-  //   component: 'InputTextArea',
-  // },
-];
-
-
-// 线索列表 搜索项
-export const searchFormClue: FormSchema[] = [
-  {
-    field: 'searchDomain',
-    label: '检索域',
-    component: 'RadioButtonGroup',
-    colProps: { span: 8 },
-    defaultValue: null,
-    componentProps: {
-      options: [
-        { label: '内容', value: 1 },
-        { label: '商品', value: 2 },
-      ],
-    },
-  },
-  {
-    ifShow: ({ values }) => values.searchDomain === 1,
-    field: 'searchDomain1',
-    label: '内容',
-    component: 'CheckboxGroup',
-    defaultValue: null,
-    componentProps: {
-      options: [
-        { label: '抖音', value: 1 },
-        { label: '快手', value: 2 },
-        { label: '小红书', value: 3 },
-      ],
-    },
-  },
-  {
-    ifShow: ({ values }) => values.searchDomain === 2,
-    field: 'searchDomain1',
-    label: '商品',
-    component: 'CheckboxGroup',
-    colProps: { span: 16 },
-    defaultValue: null,
-    componentProps: {
-      options: [
-        { label: '淘宝', value: 4 },
-        { label: '1688', value: 5 },
-        { label: '京东', value: 6 },
-        { label: '亚马逊', value: 7 },
-        { label: '抖音', value: 8 },
-        { label: '快手', value: 9 },
-        { label: '小红书', value: 10 },
-      ],
-    },
-  },
-  // {
-  //   field: 'jobClassName1',
-  //   label: '侵权方类型',
-  //   component: 'Select',
-  //   //填写组件的属性
-  //   componentProps: {
-  //     options: [
-  //       { label: '男', value: 1 },
-  //       { label: '女', value: 2 },
-  //       { label: '未知', value: 3 },
-  //     ],
-  //   },
-  //   //默认值
-  //   defaultValue: 3,
-  // },
-  {
-    field: 'productTitle',
-    label: '商品标题',
-    component: 'Input',
-    colProps: { span: 8 },
-  },
-  {
-    field: 'productDesc',
-    label: '商品简介',
-    component: 'Input',
-    colProps: { span: 8 },
-  },
-  // {
-  //   field: 'mainInfo',
-  //   label: '主体信息',
-  //   component: 'Input',
-  //   colProps: { span: 8 },
-  // },
-  // {
-  //   field: 'storeName',
-  //   label: '店铺名称',
-  //   component: 'Input',
-  //   colProps: { span: 8 },
-  // },
 ];
 
 
 // 线索列表 
 export const columnsClueList: BasicColumn[] = [
-  {
-    title: '线索ID',
-    dataIndex: 'clueId',
-    width: 100,
-  },
-  {
-    title: '检索域',
-    dataIndex: 'searchDomain',
-    width: 200,
-  },
+  // {
+  //   title: '线索ID',
+  //   dataIndex: 'id',
+  //   width: 120,
+  // },
+  // {
+  //   title: '检索域',
+  //   dataIndex: 'searchDomain',
+  //   width: 200,
+  // },
   {
     title: '商品标题',
-    dataIndex: 'jobClassName',
-    width: 200,
-  },
-  {
-    title: '商品简介',
-    dataIndex: 'searchKey',
+    dataIndex: 'productTitle',
     width: 200,
   },
   {
     title: '商品封面',
-    dataIndex: 'count',
+    dataIndex: 'productCover',
     width: 100,
+    customRender: ({ text }) => {
+      if(!text){
+        return text;
+      }
+      return render.renderImage({text}, 100, 100);
+    },
   },
   {
     title: '商品链接',
-    dataIndex: 'count',
+    dataIndex: 'productLink',
+    width: 120,
+    customRender: ({ text }) => {
+      if(!text){
+        return text;
+      }
+      return render.renderHref({text});
+    },
+  },
+  {
+    title: '商品简介',
+    dataIndex: 'productSummary',
     width: 100,
   },
   // {
@@ -394,17 +264,17 @@ export const columnsClueList: BasicColumn[] = [
   // },
   {
     title: '店铺名称',
-    dataIndex: 'taskStatus',
+    dataIndex: 'shopName',
     width: 100,
   },
   {
     title: '商品价格',
-    dataIndex: 'taskStatus',
-    width: 100,
+    dataIndex: 'commodityPrice',
+    width: 80,
   },
   {
     title: '商品销量',
-    dataIndex: 'taskStatus',
-    width: 100,
+    dataIndex: 'salesVolume',
+    width: 80,
   },
 ];

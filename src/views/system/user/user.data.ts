@@ -7,12 +7,12 @@ export const columns: BasicColumn[] = [
   {
     title: '账号ID',
     dataIndex: 'username',
-    width: 120,
+    width: 80,
   },
   {
     title: '用户名',
     dataIndex: 'realname',
-    width: 100,
+    width: 80,
   },
   // {
   //   title: '密码',
@@ -22,8 +22,8 @@ export const columns: BasicColumn[] = [
   // },
   {
     title: '账号权限',
-    dataIndex: 'sex',
-    width: 80,
+    dataIndex: 'selectedroles',
+    width: 100,
     // sorter: true,
     // customRender: ({ text }) => {
     //   return render.renderDict(text, 'sex');
@@ -31,8 +31,8 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '账号有效期',
-    dataIndex: 'sex',
-    width: 80,
+    dataIndex: 'expirationDate',
+    width: 150,
     // sorter: true,
     // customRender: ({ text }) => {
     //   return render.renderDict(text, 'sex');
@@ -106,7 +106,7 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     label: '账号权限',
-    field: 'selectedroles',
+    field: 'roleId',
     component: 'ApiSelect',
     componentProps: {
       // mode: 'multiple',
@@ -219,8 +219,11 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '账号有效期',
-    field: 'birthday',
+    field: 'expirationDate',
     component: 'DatePicker',
+    componentProps: {
+      valueFormat: 'YYYY-MM-DD',
+    },
   },
   {
     label: '备注',

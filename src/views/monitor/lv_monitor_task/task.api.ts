@@ -2,17 +2,18 @@ import { defHttp } from '/@/utils/http/axios';
 import { Modal } from 'ant-design-vue';
 
 enum Api {
-  list = '/sys/quartzJob/list',
-  save = '/sys/quartzJob/add',
-  edit = '/sys/quartzJob/edit',
-  get = '/sys/quartzJob/queryById',
-  pause = '/sys/quartzJob/pause',
-  resume = '/sys/quartzJob/resume',
-  delete = '/sys/quartzJob/delete',
-  exportXlsUrl = '/sys/quartzJob/exportXls',
-  importExcelUrl = '/sys/quartzJob/importExcel',
-  execute = '/sys/quartzJob/execute',
-  deleteBatch = '/sys/quartzJob/deleteBatch',
+  list = '/lawyer/lawyerTask/list',
+  save = '/lawyer/lawyerTask/add',
+  culeList = '/lawyer/lawyerTaskInfo/list',
+  // edit = '/lawyer/lawyerTask/edit',
+  get = '/lawyer/lawyerTask/queryById',
+  pause = '/lawyer/lawyerTask/edit',
+  // resume = '/sys/quartzJob/resume',
+  delete = '/lawyer/lawyerTask/delete',
+  exportXlsUrl = '/lawyer/lawyerTaskInfo/exportXls',
+  // importExcelUrl = '/sys/quartzJob/importExcel',
+  // execute = '/sys/quartzJob/execute',
+  // deleteBatch = '/sys/quartzJob/deleteBatch',
 }
 
 /**
@@ -32,6 +33,14 @@ export const getQuartzList = (params) => {
 };
 
 /**
+ * 查询线索列表
+ * @param params
+ */
+export const getClueList = (params) => {
+  return defHttp.get({ url: Api.culeList, params });
+};
+
+/**
  * 保存或者更新任务
  * @param params
  */
@@ -44,7 +53,7 @@ export const saveOrUpdateQuartz = (params, isUpdate) => {
  * 查询任务详情
  * @param params
  */
-export const getQuartzById = (params) => {
+export const getTaskById = (params) => {
   return defHttp.get({ url: Api.get, params });
 };
 
@@ -73,7 +82,7 @@ export const resumeJob = (params, handleSuccess) => {
  * @param params
  */
 export const pauseJob = (params, handleSuccess) => {
-  return defHttp.get({ url: Api.pause, params }).then(() => {
+  return defHttp.post({ url: Api.pause, params }).then(() => {
     handleSuccess();
   });
 };

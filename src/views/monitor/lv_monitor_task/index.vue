@@ -50,22 +50,18 @@
       title: '任务列表',
       api: getQuartzList,
       columns: columns,
+      
       actionColumn: {
         width: 180,
       },
+      useSearchForm: true,
+      showIndexColumn: true,
       formConfig: {
         labelWidth: 120,
         schemas: searchFormSchema,
         fieldMapToTime: [['fieldTime', ['beginDate', 'endDate'], 'YYYY-MM-DD HH:mm:ss']],
-      },
+      }, 
     },
-    // exportConfig: {
-    //   name: '监控任务列表',
-    //   url: getExportUrl,
-    // },
-    // importConfig: {
-    //   url: getImportUrl,
-    // },
   });
 
   const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
@@ -76,39 +72,41 @@
    */
   function getActions(record) {
     return [
-      // {
-      //   label: '编辑',
-      //   onClick: handleEdit.bind(null, record),
-      // },
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
+        ifShow: (_action) => {
+          return record.status == 1;
+        },
+      },
+      // {
+      //   label: '启动',
+      //   popConfirm: {
+      //     title: '是否启动选中任务?',
+      //     confirm: handlerResume.bind(null, record),
+      //   },
+      //   ifShow: (_action) => {
+      //     return record.status == -1;
+      //   },
+      // },
+      {
+        label: '停止',
+        popConfirm: {
+          title: '是否暂停选中任务?',
+          confirm: handlerPause.bind(null, {
+            id: record.id,
+            status: 2,
+          }),
+        },
+        ifShow: (_action) => {
+          return record.status == 0;
+        },
       },
       {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
-        },
-      },
-      {
-        label: '启动',
-        popConfirm: {
-          title: '是否启动选中任务?',
-          confirm: handlerResume.bind(null, record),
-        },
-        ifShow: (_action) => {
-          return record.status == -1;
-        },
-      },
-      {
-        label: '停止',
-        popConfirm: {
-          title: '是否暂停选中任务?',
-          confirm: handlerPause.bind(null, record),
-        },
-        ifShow: (_action) => {
-          return record.status == 0;
         },
       },
     ];
@@ -152,10 +150,8 @@
   /**
    * 详情
    */
-function handleDetail(record) {
-    console.log(record,'------eee')
-    // router.push({ path: '/task/handle/' + temp.busId, query: query })
-    router.push({ path: '/lvsys/clueList' })
+  function handleDetail(record) {
+    router.push({ path: '/lvsys/clueList' , query: { id: record.id } })
   }
 
   /**
@@ -186,7 +182,7 @@ function handleDetail(record) {
    * 暂停
    */
   async function handlerPause(record) {
-    await pauseJob({ id: record.id }, reload);
+    await pauseJob(record, reload);
   }
 
   /**
