@@ -94,7 +94,11 @@ export const searchFormSchema: FormSchema[] = [
     label: '任务状态',
     component: 'Select',
     componentProps: {
-      options: channel1,
+      options: [
+        { label: '进行中', value: 0 },
+        { label: '完成', value: 1 },
+        { label: '停止', value: 2 },
+      ],
     },
   },
   {
@@ -142,12 +146,24 @@ export const searchFormSchema: FormSchema[] = [
     label: '创建时间',
     component: 'DatePicker',
     colProps: { span: 8 },
+    componentProps: {
+      valueFormat: 'YYYY-MM-DD',
+      style: {
+        width: '100%',
+      },
+    },
   },
   {
     field: 'finishDate',
     label: '完成时间',
     component: 'DatePicker',
     colProps: { span: 8 },
+    componentProps: {
+      valueFormat: 'YYYY-MM-DD',
+      style: {
+        width: '100%',
+      },
+    },
   },
 ];
 

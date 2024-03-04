@@ -223,6 +223,9 @@ export const formSchema: FormSchema[] = [
     component: 'DatePicker',
     componentProps: {
       valueFormat: 'YYYY-MM-DD',
+      style: {
+        width: '100%',
+      },
     },
   },
   {
