@@ -25,22 +25,26 @@ export const columns: BasicColumn[] = [
     title: '任务ID',
     dataIndex: 'id',
     width: 180,
+    resizable: true,
   },
   {
     title: '任务名称',
     dataIndex: 'taskName',
     width: 150,
-    ellipsis: false
+    ellipsis: false,
+    resizable: true,
   },
   {
     title: '检索关键词',
     dataIndex: 'keyWord',
     width: 100,
+    resizable: true,
   },
   {
     title: '检索域',
     dataIndex: 'searchDomain',
     width: 100,
+    resizable: true,
     customRender: ({ text }) => {
       return text == '1' ? '内容' : '商品';
     },
@@ -49,6 +53,7 @@ export const columns: BasicColumn[] = [
     title: '渠道',
     dataIndex: 'channel',
     width: 200,
+    resizable: true,
     customRender: ({ text, record }) => {
 
       let arr = text.split(',');
@@ -72,11 +77,13 @@ export const columns: BasicColumn[] = [
     title: '线索条数',
     dataIndex: 'clueTotal',
     width: 100,
+    resizable: true,
   },
   {
     title: '任务状态',
     dataIndex: 'status',
     width: 100,
+    resizable: true,
     customRender: ({ text }) => {
       return ['进行中','完成','停止'][text]
     },
@@ -85,11 +92,13 @@ export const columns: BasicColumn[] = [
     title: '创建时间',
     dataIndex: 'createTime',
     width: 180,
+    resizable: true,
   },
   {
     title: '完成时间',
     dataIndex: 'finishTime',
     width: 180,
+    resizable: true,
   },
 ];
 
@@ -251,12 +260,14 @@ export const columnsClueList: BasicColumn[] = [
     title: '商品标题',
     dataIndex: 'productTitle',
     width: 200,
-    ellipsis: false
+    ellipsis: false,
+    resizable: true,
   },
   {
     title: '商品封面',
     dataIndex: 'productCover',
     width: 100,
+    resizable: true,
     customRender: ({ text }) => {
       if(!text){
         return text;
@@ -268,6 +279,7 @@ export const columnsClueList: BasicColumn[] = [
     title: '商品链接',
     dataIndex: 'productLink',
     width: 120,
+    resizable: true,
     customRender: ({ text }) => {
       if(!text){
         return text;
@@ -279,7 +291,8 @@ export const columnsClueList: BasicColumn[] = [
     title: '商品简介',
     dataIndex: 'productSummary',
     width: 100,
-    ellipsis: false
+    ellipsis: false,
+    resizable: true,
   },
   // {
   //   title: '主体类型',
@@ -295,22 +308,35 @@ export const columnsClueList: BasicColumn[] = [
     title: '店铺名称',
     dataIndex: 'shopName',
     width: 100,
-    ellipsis: false
+    ellipsis: false,
+    resizable: true,
   },
   {
     title: '商品价格',
     dataIndex: 'commodityPrice',
     width: 80,
+    resizable: true,
+    sorter: true,
   },
   {
     title: '商品销量',
     dataIndex: 'salesVolume',
     width: 80,
+    resizable: true,
+    sorter: true,
+  },
+  {
+    title: '销售额',
+    dataIndex: 'salesVolume',
+    width: 80,
+    resizable: true,
+    sorter: true,
   },
   {
     title: '标记',
     dataIndex: 'salesVolume',
     width: 80,
+    resizable: true,
     customRender: ({ text }) => {
       return ['是','否'][text]
     },
