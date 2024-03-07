@@ -3,12 +3,15 @@
     <!-- <AppLocalePicker class="absolute top-4 right-4 enter-x xl:text-gray-600" :showText="false"/> -->
     <!-- <AppDarkModeToggle class="absolute top-3 right-7 enter-x" /> -->
     <div class="aui-logo" v-if="!getIsMobile">
-      <div class="title">
+      <div class="aui-logo-title">
         {{ t('sys.login.title') }}
         <!-- <h3>
           <img :src="logoImg" alt="jeecg" />
         </h3> -->
       </div>
+    </div>
+    <div v-else class="aui-logo-title">
+      {{ t('sys.login.title') }}
     </div>
     <!-- <div v-else class="aui-phone-logo">
       <img :src="logoImg" alt="jeecg" />
