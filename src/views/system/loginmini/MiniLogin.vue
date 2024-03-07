@@ -35,19 +35,19 @@
                   <a-form ref="loginRef" :model="formData" v-if="activeIndex === 'accountLogin'" @keyup.enter.native="loginHandleClick">
                     <div class="aui-account">
                       <div class="aui-inputClear">
-                        <i class="icon icon-code"></i>
+                        <SvgIcon class="icon" size="20" name="a_user" />
                         <a-form-item>
                           <a-input class="fix-auto-fill" :placeholder="t('sys.login.userName')" v-model:value="formData.username" />
                         </a-form-item>
                       </div>
                       <div class="aui-inputClear">
-                        <i class="icon icon-password"></i>
+                        <SvgIcon class="icon" size="20" name="a_lock" />
                         <a-form-item>
                           <a-input class="fix-auto-fill" type="password" :placeholder="t('sys.login.password')" v-model:value="formData.password" />
                         </a-form-item>
                       </div>
                       <div class="aui-inputClear">
-                        <i class="icon icon-code"></i>
+                        <SvgIcon class="icon" size="20" name="a_vaildcode" />
                         <a-form-item>
                           <a-input class="fix-auto-fill" type="text" :placeholder="t('sys.login.inputCode')" v-model:value="formData.inputCode" />
                         </a-form-item>
@@ -154,6 +154,7 @@
   </div>
 </template>
 <script lang="ts" setup name="login-mini">
+  import { SvgIcon } from '/@/components/Icon';
   import { getCaptcha, getCodeInfo } from '/@/api/sys/user';
   import { computed, onMounted, reactive, ref, toRaw, unref } from 'vue';
   import codeImg from '/@/assets/images/checkcode.png';
