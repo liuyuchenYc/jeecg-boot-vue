@@ -24,12 +24,13 @@ export const columns: BasicColumn[] = [
   {
     title: '任务ID',
     dataIndex: 'id',
-    width: 120,
+    width: 180,
   },
   {
     title: '任务名称',
     dataIndex: 'taskName',
-    width: 100,
+    width: 150,
+    ellipsis: false
   },
   {
     title: '检索关键词',
@@ -79,6 +80,16 @@ export const columns: BasicColumn[] = [
     customRender: ({ text }) => {
       return ['进行中','完成','停止'][text]
     },
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    width: 180,
+  },
+  {
+    title: '完成时间',
+    dataIndex: 'finishTime',
+    width: 180,
   },
 ];
 
@@ -240,6 +251,7 @@ export const columnsClueList: BasicColumn[] = [
     title: '商品标题',
     dataIndex: 'productTitle',
     width: 200,
+    ellipsis: false
   },
   {
     title: '商品封面',
@@ -267,6 +279,7 @@ export const columnsClueList: BasicColumn[] = [
     title: '商品简介',
     dataIndex: 'productSummary',
     width: 100,
+    ellipsis: false
   },
   // {
   //   title: '主体类型',
@@ -282,6 +295,7 @@ export const columnsClueList: BasicColumn[] = [
     title: '店铺名称',
     dataIndex: 'shopName',
     width: 100,
+    ellipsis: false
   },
   {
     title: '商品价格',
@@ -292,5 +306,13 @@ export const columnsClueList: BasicColumn[] = [
     title: '商品销量',
     dataIndex: 'salesVolume',
     width: 80,
+  },
+  {
+    title: '标记',
+    dataIndex: 'salesVolume',
+    width: 80,
+    customRender: ({ text }) => {
+      return ['是','否'][text]
+    },
   },
 ];

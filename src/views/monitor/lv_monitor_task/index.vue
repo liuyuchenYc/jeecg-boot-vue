@@ -50,7 +50,6 @@
       title: '任务列表',
       api: getQuartzList,
       columns: columns,
-      
       actionColumn: {
         width: 180,
       },

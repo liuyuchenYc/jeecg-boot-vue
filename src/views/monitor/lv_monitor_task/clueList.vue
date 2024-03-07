@@ -5,6 +5,9 @@
             <template #tableTitle>
                 <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
             </template>
+            <template #action="{ record }">
+                <TableAction :actions="getActions(record)"/>
+            </template>
         </BasicTable>
     </div>
 </template>
@@ -15,7 +18,7 @@ import { ref,reactive,unref } from 'vue';
 import { Description, DescItem, useDescription} from '/@/components/Description/index';
 import { ActionItem, BasicColumn, BasicTable, FormSchema, TableAction } from '/@/components/Table';
 import { useListPage } from '/@/hooks/system/useListPage';
-import { getClueList, getTaskById, getExportUrl } from './task.api';
+import { getClueList, getTaskById, getExportUrl, handlerIsMark } from './task.api';
 import { columnsClueList } from './task.data';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { useRoute } from 'vue-router';
@@ -130,6 +133,19 @@ async function getDetails(index){
             component: 'Input',
             colProps: { span: 8 },
         },
+        {
+            field: '11',
+            label: '是否被标记',
+            component: 'RadioGroup',
+            colProps: { span: 8 },
+            defaultValue: null,
+            componentProps: {
+                options: [
+                    { label: '是', value: 1 },
+                    { label: '否', value: 2 },
+                ],
+            },
+        },
     ];
 
     searchFormClue.value = searchForm;
@@ -152,6 +168,9 @@ const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
         actionColumn: false,
         useSearchForm: true,
         showIndexColumn: true,
+        actionColumn: {
+            width: 80,
+        },
         formConfig: {
             labelWidth: 120,
             schemas: searchFormClue,
@@ -169,5 +188,36 @@ const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
 const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
 
 
+  /**
+   * 操作列定义
+   * @param record
+   */
+   function getActions(record) {
+    return [
+      {
+        label: '标记',
+        popConfirm: {
+          title: '是否标记选中项?',
+          confirm: handlerIsMark.bind(null, record),
+        },
+        ifShow: (_action) => {
+          return false //true//record.status == -1;
+        },
+      },
+      {
+        label: '取消标记',
+        popConfirm: {
+          title: '是否取消标记选中项?',
+          confirm: handlerIsMark.bind(null, {
+            id: record.id,
+            status: 2,
+          }),
+        },
+        ifShow: (_action) => {
+          return true //record.status == 0;
+        },
+      },
+    ];
+  }
 
 </script>

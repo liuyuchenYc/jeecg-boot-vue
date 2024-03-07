@@ -114,3 +114,14 @@ export const batchDeleteQuartz = (params, handleSuccess) => {
     },
   });
 };
+
+
+/**
+ * 标记 取消标记
+ * @param params
+ */
+export const handlerIsMark = (params, handleSuccess) => {
+  return defHttp.get({ url: Api.resume, params }).then(() => {
+    handleSuccess();
+  });
+};

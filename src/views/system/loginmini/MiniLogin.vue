@@ -15,13 +15,12 @@
     <div v-show="type === 'login'">
       <div class="aui-content">
         <div class="aui-container">
-          <div class="aui-form">
-            <div class="aui-image">
+          <!-- <div class="aui-form"> -->
+            <!-- <div class="aui-image">
               <div class="aui-image-text">
-                欢迎登录 
-                <!-- <img :src="adTextImg" /> -->
+                <img :src="adTextImg" />
               </div>
-            </div>
+            </div> -->
             <div class="aui-formBox">
               <div class="aui-formWell">
                 <div class="aui-flex aui-form-nav investment_title">
@@ -93,6 +92,10 @@
                     <a-button :loading="loginLoading" class="aui-link-login" type="primary" @click="loginHandleClick">
                       {{ t('sys.login.loginButton') }}</a-button>
                   </div>
+
+                  <div>
+                    <div class="aui-text">如需预约演示、购买或续费请联系张经理：18511676774（微信同）</div>
+                  </div>
                   <!-- 二维码登录 -->
                   <!-- <div class="aui-flex">
                     <a class="aui-linek-code aui-flex-box" @click="codeHandleClick">{{ t('sys.login.qrSignInFormTitle') }}</a>
@@ -133,7 +136,7 @@
                 </div>
               </a-form> -->
             </div>
-          </div>
+          <!-- </div> -->
         </div>
       </div>
     </div>
@@ -460,12 +463,19 @@
     height: 42px;
     padding: 10px 15px;
     font-size: 14px;
-    border-radius: 8px;
+    // border-radius: 8px;
     margin-top: 15px;
     margin-bottom: 8px;
     flex: 1;
     color: #fff;
   }
+
+  .aui-text{
+    color: #eee;
+    font-size: 12px;
+    text-align: center;
+  }
+
   .aui-phone-logo{
     position: absolute;
     margin-left: 10px;
