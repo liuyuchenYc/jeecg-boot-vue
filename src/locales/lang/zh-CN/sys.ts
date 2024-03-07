@@ -60,6 +60,7 @@ export default {
     placeholder: '请输入锁屏密码或者用户密码',
   },
   login: {
+    title: '律油果监测系统',
     backSignIn: '返回',
     signInFormTitle: '登 录',
     mobileSignInFormTitle: '手机登录',
