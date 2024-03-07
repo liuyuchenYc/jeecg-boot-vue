@@ -24,13 +24,13 @@ export const columns: BasicColumn[] = [
   {
     title: '任务ID',
     dataIndex: 'id',
-    width: 180,
+    width: 100,
     resizable: true,
   },
   {
     title: '任务名称',
     dataIndex: 'taskName',
-    width: 150,
+    width: 120,
     ellipsis: false,
     resizable: true,
   },
@@ -52,7 +52,7 @@ export const columns: BasicColumn[] = [
   {
     title: '渠道',
     dataIndex: 'channel',
-    width: 200,
+    width: 150,
     resizable: true,
     customRender: ({ text, record }) => {
 
@@ -76,13 +76,13 @@ export const columns: BasicColumn[] = [
   {
     title: '线索条数',
     dataIndex: 'clueTotal',
-    width: 100,
+    width: 80,
     resizable: true,
   },
   {
     title: '任务状态',
     dataIndex: 'status',
-    width: 100,
+    width: 80,
     resizable: true,
     customRender: ({ text }) => {
       return ['进行中','完成','停止'][text]
@@ -91,13 +91,13 @@ export const columns: BasicColumn[] = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 180,
+    width: 120,
     resizable: true,
   },
   {
     title: '完成时间',
     dataIndex: 'finishTime',
-    width: 180,
+    width: 120,
     resizable: true,
   },
 ];

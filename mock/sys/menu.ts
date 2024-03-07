@@ -7,7 +7,8 @@ const dashboardRoute = {
   path: '/dashboard',
   name: 'Dashboard',
   component: 'LAYOUT',
-  redirect: '/dashboard/analysis',
+  // redirect: '/dashboard/analysis',
+  redirect: '/lv_monitor_task/list',
   meta: {
     title: 'routes.dashboard.dashboard',
     hideChildrenInMenu: true,
@@ -17,6 +18,7 @@ const dashboardRoute = {
     {
       path: 'analysis',
       name: 'Analysis',
+      redirect: '/lv_monitor_task/list',
       component: '/dashboard/Analysis/index',
       meta: {
         hideMenu: true,

@@ -8,7 +8,7 @@ export function createFakeUserList() {
       realname: '管理员',
       avatar: 'https://q1.qlogo.cn/g?b=qq&nk=190848757&s=640',
       desc: 'manager',
-      password: '123456',
+      password: '123qwer!',
       token: 'fakeToken1',
       homePath: '/dashboard/analysis',
       roles: [
@@ -21,7 +21,7 @@ export function createFakeUserList() {
     {
       userId: '2',
       username: 'jeecg',
-      password: '123456',
+      password: '123qwer',
       realname: '测试用户',
       avatar: 'https://q1.qlogo.cn/g?b=qq&nk=339449197&s=640',
       desc: 'tester',
