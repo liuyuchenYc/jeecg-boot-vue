@@ -322,7 +322,6 @@ const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
         title: '任务详情',
         api: getClueList,
         columns: columnsClueList,
-        actionColumn: false,
         useSearchForm: true,
         showIndexColumn: true,
         actionColumn: {
