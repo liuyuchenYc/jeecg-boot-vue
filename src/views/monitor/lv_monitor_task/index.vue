@@ -29,7 +29,7 @@
   </div>
 </template>
 <script lang="ts" name="monitor-task" setup>
-  import { ref } from 'vue';
+  import { ref, unref, computed } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
@@ -38,8 +38,12 @@
   import TaskModal from './TaskModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useRouter } from 'vue-router'
+  import { useUserStore } from '/@/store/modules/user';
 
-  const router = useRouter()
+  const userStore = useUserStore();
+  const router = useRouter();
+
+  let roleId = unref(userStore.getUserInfo.realname);
   
   const { createMessage } = useMessage();
   const [registerModal, { openModal }] = useModal();
@@ -74,9 +78,9 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
-        ifShow: (_action) => {
-          return record.status == 1;
-        },
+        // ifShow: (_action) => {
+        //   return record.status == 1;
+        // },
       },
       // {
       //   label: '启动',
@@ -140,10 +144,18 @@
   /**
    * 新增事件
    */
-  function handleAdd() {
-    openModal(true, {
+  async function handleAdd() {
+    // 角色权限校验
+  //  let res = await deleteQuartz({ id: record.id }, reload);
+    // if(roleId == '管理员'){
+    //   // createMessage.warning('当前角色没有权限');
+    //   // return;
+    // }else{
+      openModal(true, {
       isUpdate: false,
     });
+    // }
+    
   }
 
   /**

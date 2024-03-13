@@ -18,8 +18,9 @@ import { ref,reactive,unref } from 'vue';
 import { Description, DescItem, useDescription} from '/@/components/Description/index';
 import { ActionItem, BasicColumn, BasicTable, FormSchema, TableAction } from '/@/components/Table';
 import { useListPage } from '/@/hooks/system/useListPage';
-import { getClueList, getTaskById, getExportUrl, handlerIsMark } from './task.api';
-import { columnsClueList } from './task.data';
+import { getClueList, getTaskById, getExportUrl, isMark } from './task.api';
+// import { columnsClueList, columnsClueList1 } from './task.data';
+import { render } from '/@/utils/common/renderUtils';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { useRoute } from 'vue-router';
 
@@ -62,11 +63,13 @@ let recordData: Recordable = reactive({
 });
 
 let searchFormClue = ref([]);
+let columnsClueList = ref([]);
 
 const route = useRoute();
 const index = route.query?.id ?? -1;
 
 getDetails(index)
+
 
 async function getDetails(index){
     const data = await getTaskById({id: index})
@@ -134,7 +137,7 @@ async function getDetails(index){
             colProps: { span: 8 },
         },
         {
-            field: '11',
+            field: 'marks',
             label: '是否被标记',
             component: 'RadioGroup',
             colProps: { span: 8 },
@@ -142,13 +145,167 @@ async function getDetails(index){
             componentProps: {
                 options: [
                     { label: '是', value: 1 },
-                    { label: '否', value: 2 },
+                    { label: '否', value: 0 },
                 ],
             },
         },
     ];
 
     searchFormClue.value = searchForm;
+
+    // 线索列表 内容
+    const columnsList1: BasicColumn[] = [
+    {
+        title: '内容标题',
+        dataIndex: 'content',
+        width: 200,
+        ellipsis: false,
+        resizable: true,
+    },
+    {
+        title: '内容ID',
+        dataIndex: 'contentId',
+        width: 100,
+        resizable: true,
+    },
+    {
+        title: '内容链接',
+        dataIndex: 'contentUrl',
+        width: 120,
+        resizable: true,
+        customRender: ({ text }) => {
+            if(!text){
+                return text;
+            }
+            return render.renderHref({text});
+        },
+    },
+    {
+        title: '作者',
+        dataIndex: 'contentAuthor',
+        width: 100,
+        resizable: true,
+    },
+    {
+        title: '作者ID',
+        dataIndex: 'contentAuthorId',
+        width: 100,
+        resizable: true,
+    },
+    {
+        title: '用户签名',
+        dataIndex: 'userSign',
+        width: 100,
+        resizable: true,
+    },
+    {
+        title: '地区',
+        dataIndex: 'area',
+        width: 100,
+        resizable: true,
+    },
+    {
+        title: '标记',
+        dataIndex: 'marks',
+        width: 80,
+        resizable: true,
+        customRender: ({ text }) => {
+            return ['否','是'][text]
+        },
+    },
+    ];
+
+    // 线索列表 商品
+    const columnsList2: BasicColumn[] = [
+    // {
+    //   title: '线索ID',
+    //   dataIndex: 'id',
+    //   width: 120,
+    // },
+    // {
+    //   title: '检索域',
+    //   dataIndex: 'searchDomain',
+    //   width: 200,
+    // },
+    {
+        title: '商品标题',
+        dataIndex: 'productTitle',
+        width: 200,
+        ellipsis: false,
+        resizable: true,
+    },
+    {
+        title: '商品封面',
+        dataIndex: 'productCover',
+        width: 100,
+        resizable: true,
+        customRender: ({ text }) => {
+            if(!text){
+                return text;
+            }
+            return render.renderImage({text}, 100, 100);
+        },
+    },
+    {
+        title: '商品链接',
+        dataIndex: 'productLink',
+        width: 120,
+        resizable: true,
+        customRender: ({ text }) => {
+            if(!text){
+                return text;
+            }
+            return render.renderHref({text});
+        },
+    },
+    {
+        title: '商品简介',
+        dataIndex: 'productSummary',
+        width: 100,
+        ellipsis: false,
+        resizable: true,
+    },
+    {
+        title: '店铺名称',
+        dataIndex: 'shopName',
+        width: 100,
+        ellipsis: false,
+        resizable: true,
+    },
+    {
+        title: '商品价格',
+        dataIndex: 'commodityPrice',
+        width: 80,
+        resizable: true,
+        sorter: true,
+    },
+    {
+        title: '商品销量',
+        dataIndex: 'salesVolume',
+        width: 80,
+        resizable: true,
+        sorter: true,
+    },
+    {
+        title: '销售额',
+        dataIndex: 'totalSale',
+        width: 80,
+        resizable: true,
+        sorter: true,
+    },
+    {
+        title: '标记',
+        dataIndex: 'marks',
+        width: 80,
+        resizable: true,
+        customRender: ({ text }) => {
+            return ['否','是'][text]
+        },
+    },
+    ];
+
+    columnsClueList.value = Number(data.searchDomain) === 1 ? columnsList1 : columnsList2;
+
 }
 
 const [registerDesc] = useDescription({
@@ -188,36 +345,44 @@ const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
 const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
 
 
-  /**
-   * 操作列定义
-   * @param record
-   */
-   function getActions(record) {
+/**
+ * 操作列定义
+ * @param record
+ */
+function getActions(record) {
     return [
-      {
+        {
         label: '标记',
         popConfirm: {
-          title: '是否标记选中项?',
-          confirm: handlerIsMark.bind(null, record),
+            title: '是否标记选中项?',
+            confirm: handlerIsMark.bind(null,  {
+            id: record.id,
+            marks: 1,
+            }),
         },
         ifShow: (_action) => {
-          return false //true//record.status == -1;
+            return record.marks === 0;
         },
-      },
-      {
+        },
+        {
         label: '取消标记',
         popConfirm: {
-          title: '是否取消标记选中项?',
-          confirm: handlerIsMark.bind(null, {
+            title: '是否取消标记选中项?',
+            confirm: handlerIsMark.bind(null, {
             id: record.id,
-            status: 2,
-          }),
+            marks: 0,
+            }),
         },
         ifShow: (_action) => {
-          return true //record.status == 0;
+            return record.marks === 1;
         },
-      },
+        },
     ];
-  }
+}
+
+// 标记、取消标记
+async function handlerIsMark(record) {
+    await isMark(record, reload);
+}
 
 </script>

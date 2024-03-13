@@ -5,9 +5,9 @@ enum Api {
   list = '/lawyer/lawyerTask/list',
   save = '/lawyer/lawyerTask/add',
   culeList = '/lawyer/lawyerTaskInfo/list',
-  // edit = '/lawyer/lawyerTask/edit',
-  get = '/lawyer/lawyerTask/queryById',
   pause = '/lawyer/lawyerTask/edit',
+  get = '/lawyer/lawyerTask/queryById',
+  edit = '/lawyer/lawyerTaskInfo/edit',
   // resume = '/sys/quartzJob/resume',
   delete = '/lawyer/lawyerTask/delete',
   exportXlsUrl = '/lawyer/lawyerTaskInfo/exportXls',
@@ -120,8 +120,8 @@ export const batchDeleteQuartz = (params, handleSuccess) => {
  * 标记 取消标记
  * @param params
  */
-export const handlerIsMark = (params, handleSuccess) => {
-  return defHttp.get({ url: Api.resume, params }).then(() => {
+export const isMark = (params, handleSuccess) => {
+  return defHttp.post({ url: Api.edit, params }).then(() => {
     handleSuccess();
   });
 };

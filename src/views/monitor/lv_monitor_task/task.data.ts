@@ -2,6 +2,19 @@ import { BasicColumn, FormSchema } from '/@/components/Table';
 import { render } from '/@/utils/common/renderUtils';
 import { JCronValidator } from '/@/components/Form';
 import { t } from 'vxe-table';
+import { useUserStore } from '/@/store/modules/user';
+
+const userStore = useUserStore();
+let roleName = userStore.getUserInfo.roleName;
+let count = -1;
+
+if(roleName ==='基础版'){
+  count = 2
+}else if(roleName ==='标准版'){
+  count = 4
+}else if(roleName ==='标准版'){
+  count = 6
+}
 
 const channel1 = [
   { label: '抖音', value: '8' },
@@ -228,6 +241,21 @@ export const formSchema: FormSchema[] = [
     defaultValue: null,
     componentProps: {
       options: channel1,
+      onChange: (value) => {
+        if(value.length == count){
+          channel1.map(el=>{
+           if(!value.includes(el.value)){
+             el.disabled = true
+           }
+           return el 
+         })
+       }else{
+         channel1.map(el=>{
+           delete el.disabled
+           return el 
+         })
+       }
+      },
     },
   },
   {
@@ -239,106 +267,23 @@ export const formSchema: FormSchema[] = [
     defaultValue: null,
     componentProps: {
       options: channel2,
+      onChange: (value) => {
+        if(value.length == count){
+           channel2.map(el=>{
+            if(!value.includes(el.value)){
+              el.disabled = true
+            }
+            return el 
+          })
+        }else{
+          channel2.map(el=>{
+            delete el.disabled
+            return el 
+          })
+        }
+      },
     },
   },
 ];
 
 
-// 线索列表 
-export const columnsClueList: BasicColumn[] = [
-  // {
-  //   title: '线索ID',
-  //   dataIndex: 'id',
-  //   width: 120,
-  // },
-  // {
-  //   title: '检索域',
-  //   dataIndex: 'searchDomain',
-  //   width: 200,
-  // },
-  {
-    title: '商品标题',
-    dataIndex: 'productTitle',
-    width: 200,
-    ellipsis: false,
-    resizable: true,
-  },
-  {
-    title: '商品封面',
-    dataIndex: 'productCover',
-    width: 100,
-    resizable: true,
-    customRender: ({ text }) => {
-      if(!text){
-        return text;
-      }
-      return render.renderImage({text}, 100, 100);
-    },
-  },
-  {
-    title: '商品链接',
-    dataIndex: 'productLink',
-    width: 120,
-    resizable: true,
-    customRender: ({ text }) => {
-      if(!text){
-        return text;
-      }
-      return render.renderHref({text});
-    },
-  },
-  {
-    title: '商品简介',
-    dataIndex: 'productSummary',
-    width: 100,
-    ellipsis: false,
-    resizable: true,
-  },
-  // {
-  //   title: '主体类型',
-  //   dataIndex: 'taskStatus',
-  //   width: 100,
-  // },
-  // {
-  //   title: '主体信息',
-  //   dataIndex: 'taskStatus',
-  //   width: 100,
-  // },
-  {
-    title: '店铺名称',
-    dataIndex: 'shopName',
-    width: 100,
-    ellipsis: false,
-    resizable: true,
-  },
-  {
-    title: '商品价格',
-    dataIndex: 'commodityPrice',
-    width: 80,
-    resizable: true,
-    sorter: true,
-  },
-  {
-    title: '商品销量',
-    dataIndex: 'salesVolume',
-    width: 80,
-    resizable: true,
-    sorter: true,
-  },
-  {
-    title: '销售额',
-    dataIndex: 'salesVolume',
-    width: 80,
-    resizable: true,
-    sorter: true,
-  },
-  {
-    title: '标记',
-    dataIndex: 'salesVolume',
-    width: 80,
-    resizable: true,
-    customRender: ({ text }) => {
-      return ['是','否'][text]
-    },
-  },
-];
