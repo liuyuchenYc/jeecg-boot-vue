@@ -351,30 +351,24 @@ const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableCont
 function getActions(record) {
     return [
         {
-        label: '标记',
-        popConfirm: {
-            title: '是否标记选中项?',
-            confirm: handlerIsMark.bind(null,  {
-            id: record.id,
-            marks: 1,
+            label: '标记',
+            onClick: handlerIsMark.bind(null,  {
+                id: record.id,
+                marks: 1,
             }),
-        },
-        ifShow: (_action) => {
-            return record.marks === 0;
-        },
+            ifShow: (_action) => {
+                return record.marks === 0;
+            },
         },
         {
-        label: '取消标记',
-        popConfirm: {
-            title: '是否取消标记选中项?',
-            confirm: handlerIsMark.bind(null, {
-            id: record.id,
-            marks: 0,
+            label: '取消标记',
+            onClick: handlerIsMark.bind(null,  {
+                id: record.id,
+                marks: 0,
             }),
-        },
-        ifShow: (_action) => {
-            return record.marks === 1;
-        },
+            ifShow: (_action) => {
+                return record.marks === 1;
+            },
         },
     ];
 }
